@@ -1,11 +1,13 @@
-# Инструкция по настройке окружения и сдаче заданий
+# Курс Python
+
+## Инструкция по настройке окружения и сдаче заданий
 
 Не стесняйтесь писать любые вопросы в чат курса — поможем с настройкой!
 
 <details><summary><b>Настройка окружения</b></summary>
 
 ### Регистрация
-Для начала вам нужно зарегистрироваться на [python-math-cs.compscicenter.ru](https://python2019.compscicenter.ru).
+Для начала вам нужно зарегистрироваться на [python-math-cs.compscicenter.ru](https://python-math-cs.compscicenter.ru).
 
 Если вы уже регистрировались в системе, можно просто нажать "Login".
 Если вы не помните или не уверены, то можете попробовать зарегистрироваться, и в случае, если такой пользователь уже имеется, получите сообщение об ошибке: "Email has already been taken". В таком случае тоже смело жмите "Login".
@@ -89,9 +91,9 @@ Connection to gitlab.manytask.org closed.
 
 О том, что такое гит, и как вообще с ним и с Питоном работать, мы рассказывали во [втором семинаре 2021 года](https://tinyurl.com/PythonGit).
 
-С некоторой вероятностью гит уже стоит, проверить можно так: `git --version`.
+С некоторой вероятностью гит уже установлен, проверить можно так: `git --version`.
 
-Если не стоит, и у вас Ubuntu/Debian, то всё просто:
+Если не установлен, и у вас Ubuntu/Debian, то всё просто:
 ```bash
 sudo apt-get install git
 ```
@@ -130,7 +132,7 @@ git remote set-url --push origin git@gitlab.manytask.org:spbu-math-cs-python/sid
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 ```
 
-Будет много текста, который, скорее всего, закончится 
+Будет много текста, который, скорее всего, закончится
 ```
 WARNING: seems you still have not added 'pyenv' to the load path.
 
@@ -197,7 +199,7 @@ mypy 0.910
 - Разверните меню "Project interpreter", выберите "Existing interpreter"
 - Укажите путь до установленного интерпретатора: `<директория с задачками>/mkn_env/bin/python`
 - Подтвердите создание проекта
-- [Опционально] Далее, при попытке воспользоваться дебаггером может быть необходимо зайти в Settings > Tools > Python Integrated Tools и поменять там Default Test Runner на pytest. Тогда при нажатии правой кнопкой мыши на директорию с задачей должен появиться пункт Debug 'pytest in \<folder name\>'. 
+- [Опционально] Далее, при попытке воспользоваться дебаггером может быть необходимо зайти в Settings > Tools > Python Integrated Tools и поменять там Default Test Runner на pytest. Тогда при нажатии правой кнопкой мыши на директорию с задачей должен появиться пункт Debug 'pytest in \<folder name\>'.
 
 </details>
 
@@ -239,7 +241,7 @@ Host gitlab.manytask.org
 ```
 затем нужно вставить в файл содержимое и нажать ctrl + O для сохранения и ctrl + X для выхода из редактора.
 
-Либо с помощью команды 
+Либо с помощью команды
 ```bash
 echo $'Host gitlab.manytask.org\n\tIdentityFile ~/.ssh/manytask_ed25519' > ~/.ssh/config
 ```
@@ -334,6 +336,37 @@ Python 3.9.7 (default, Sep  2 2020, 19:52:21)
 
 ```
 
+<details><summary><b>Apple silicon (!)</b></summary>
+Если у вас устройство на `apple silicon m1`, то... удачи вам :3  
+Мы НЕ гарантируем и не обещаем поддержку всего курса на такой архитектуре, но вы можете попробовать.
+
+Вот один из способов установить необходимые пакеты —
+Выполняем инструкцию выше, но вместо `pip install --upgrade` делаем следующее
+```bash
+# Устанавливаем компиляторы
+> brew install openblas gfortran
+> export OPENBLAS="$(brew --prefix openblas)"
+# Отдельно ставим биндинговые пакеты
+> pip install cython pybind11 pythran
+# Ставим llvm, который нужен некоторым отдельным пакетам
+> brew install llvm@11
+> export LLVM_CONFIG="/opt/homebrew/Cellar/llvm@11/11.1.0_2/bin/llvm-config"
+
+# Ставим отдельно llvmlite
+> pip install llvmlite
+# Самое весёлое - пробуем собрать себе капризные библиотеки (это может занять время)
+> pip install --no-binary :all: --no-use-pep517 numpy==1.20.2
+> pip install --no-binary :all: --no-use-pep517 scipy==1.7.1
+> pip install --no-binary :all: --no-use-pep517 pandas==1.3.1
+
+# Ну а теперь ставим всё остальное и молимся чтоб не упало
+> pip install -r requirements.txt
+
+>>>
+```
+(Проверьте, что тут версии такие же как и в `requirements.txt`)
+</details>
+
 #### Установка и настройка IDE
 
 Мы рекомендуем вам воспользоваться [PyCharm](https://www.jetbrains.com/pycharm/download/).
@@ -404,10 +437,34 @@ $ cd hello_world
 $ source mkn_env/bin/activate   # активируем виртуальное окружение, если не активировано
 (mkn_env)$ pytest hello_world/  # запуск тестов
 (mkn_env)$ flake8 hello_world/  # запуск линтера и stylecheck'а
-(mkn_env)$ pycodestyle hello_world/ 
+(mkn_env)$ pycodestyle hello_world/
 (mkn_env)$ mypy hello_world/    # запуск typecheck'а
 ```
 </details>
+
+<details><summary><a>MacOS</a></summary>
+
+```bash
+> ~/.pyenv/versions/3.9.7/envs/shad_env/bin/pytest 01.1.PythonTools/hello_world/  # запуск тестов
+> ~/.pyenv/versions/3.9.7/envs/shad_env/bin/flake8 01.1.PythonTools/hello_world/  # запуск линтера и stylecheck'а
+> ~/.pyenv/versions/3.9.7/envs/shad_env/bin/mypy 01.1.PythonTools/hello_world/    # запуск typecheck'а
+```
+
+NB: Заметьте, что запуск происходит из **корня проекта**. Если хочется запускать из папки с задачей, то нужно **указать путь** до `setup.cfg` как аргумент для `pytest`/`flake8`/`mypy`.
+</details>
+
+<details><summary><a>PyCharm</a></summary>
+
+Если вы хотите проверить себя и не заходить в консоль, можно обойтись и PyCharm'ом.
+Чтобы проверить pytest, можно нажать правой кнопкой на директорию с задачей и выбрать "pytest in ...".
+
+После запуска pytest появится отдельное меню Run в котором будет список запускаемых тестов.
+Любой из них можно запустить/продебажить нажав правой кнопкой мыши на него.
+
+NB: В PyCharm можно настроить автоматический запуск `pytest`/`flake8`/`mypy` по кнопке тестирования, предоставляем вам возможность настроить это под себя.
+
+</details>
+
 
 ### Отправляем задачу в тестирующую систему
 ```bash
@@ -415,8 +472,6 @@ git add hello_world/hello_world.py
 git commit -m 'Add hello world task'
 git push origin master
 ```
-
-**Важно:** CI/CD видит только последний коммит. Если вы локально сделали несколько коммитов, а потом запушили, тесты запустятся только для задач, которые попали в последний коммит.
 
 Вы можете наблюдать за результатами тестирования на странице `CI/CD -> Jobs` в своём репозитории, выбираем задачу, жмем на иконку статуса.
 
@@ -440,51 +495,23 @@ git push origin master
 Это нужно, чтобы понимать, когда нужно идти читать логи, а когда всё хорошо.
 </details>
 
-<details><summary><b>Как контрибьютить в наш репозиторий</b></summary>
-Мы за проактивный подход, поэтому если вы видите неточность или ошибку в условии задачи/тестах, то вы можете прислать нам правки.
 
-### Последовательность действий
-1. Синхронизуйте свой репозиторий с нашим:
-```bash
-git pull
-```
-2. Создайте новую ветку для merge request'а:
-```bash
-git checkout -b <your-branch-name> upstream/master
-```
-3. Внесите изменения и закоммитьте:
-```bash
-git add <changed-files>;
-git commit -m <message>
-```
-4. Отправьте изменения в свой гитлаб-репозиторий:
-```bash
-git push origin <your-branch-name>
-```
-5. Зайдите в свой репозиторий на [gitlab.manytask.org](gitlab.manytask.org), нажмите слева на панели `Merge Requests -> New merge request`
-6. Выберите `source branch`: имя вашего репозитория + имя вашей ветки <your-branch-name>
-7. Выберите `target branch`: spbu-math-cs-python/spring-2022 + master
-8. Нажмите `Compare branches and continue`
-9. Задайте название и описание вашего реквеста, внизу страницы посмотрите изменения (вкладка Changes), если все ок, то жмите `Submit merge request`
+<details><summary><b>'У меня всё сломалось!'</b></summary>
+В первую очередь стоит самостоятельно попробовать разобраться в причинах ошибки. Самые рабочие варианты:  
 
-### Что потом?
-* Мы посмотрим реквест, напишем комментарии, если они у нас будут. Вы можете продолжать вносить изменения и коммитить их прямо в этот реквест (обновится автоматически), пока остаетесь в нужной ветке
-* В любой момент вы можете переключиться обратно на код ваших задачек, и работать с ними:
-```bash
-git checkout master
-```
-или переключиться обратно на ваш реквест, и внести в него изменения:
-```bash
-git checkout <your-branch-name>
-```
-* Когда ваш реквест будет принят и смерджен, можно удалить ветку:
-```bash
-git branch remove <your-branch-name>
-```
+* 'метод пристального взгляда'
+* google
+* `FAQ.md`
 
+(в файле `FAQ.md` содержатся решения для самых частых проблем)
+
+Если же вышеописанные методы не помогают - чатик ждёт вашего вопроса!
+
+-А что делать если вообще всё получается?  
+-Отвечать на вопросы в чатике! Это очень ценно!   
 </details>
 
-# Лекции
+## Лекции
 
 <details><summary><b>Как открыть ноутбук с лекцией?</b></summary>
 
@@ -540,4 +567,6 @@ $ nano ~/.ipython/profile_default/startup/typecheck.py
 ~/.pyenv/versions/3.9.7/envs/mkn_env/bin/jupyter notebook
 ```
 
+Для проверки типов добавить строчку `%%typecheck` в тестируемой ячейке.  
+Для применения `mypy` ко всем запускаемым ячейкам можно использовать [Nb Mypy](https://pypi.org/project/nb-mypy/).
 </details>
