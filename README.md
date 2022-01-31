@@ -147,6 +147,9 @@ eval "$(pyenv virtualenv-init -)"
 Если при попытке установить Питон вы получите ошибку в духе `bash: pyenv: command not found`, то нужно выполнить првую из команд, предлагаемых pyenv'ом, где задается PATH.
 
 - Установите нужную версию питона
+Здесь могут быть ошибки при установке. В этом случае поставьте нужные пакеты в зависимости от вашего дистрибутива операционной системы следуя [этой ссылке](https://github.com/pyenv/pyenv/wiki#suggested-build-environment) и ещё потом возможно [этой инструкции](https://github.com/pyenv/pyenv/wiki/Common-build-problems).
+(Если под WSL не находится `llvm`, то можно взять `llvm-6.0-runtime llvm-6.0-dev`)
+
 ```bash
 pyenv install 3.9.7
 ```
