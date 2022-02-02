@@ -14,14 +14,14 @@
 
 Кодовое слово, необходимое при регистрации, смотрите в [lms](https://emkn.ru/courses/2022-spring/4.79-python_lang/about/)
 
-<img src="https://gitlab.manytask.org/spbu-math-cs-python/spring-2022/-/raw/master/img/sign_in.jpg" width=800/>
+<img src="https://gitlab.manytask.org/spbu-math-cs-python/spring-2022/-/raw/master/sign_in.jpg" width=800/>
 
 Далее вы попадете на [gitlab.manytask.org](https://gitlab.manytask.org), где должны будете залогиниться, используя логин-пароль, который вы вводили в форму регистрации ранее.
 Если вы проходили эту процедуру ранее и gitlab вас помнит, то этот шаг автоматически будет пропущен.
 
 В итоге вы должны попасть на главную python-math-cs.compscicenter.ru, которая выглядит примерно так:
 
-<img src="https://gitlab.manytask.org/spbu-math-cs-python/spring-2022/-/raw/master/img/web_interface.png" width=800/>
+<img src="https://gitlab.manytask.org/spbu-math-cs-python/spring-2022/-/raw/master/web_interface.png" width=800/>
 
 ### Добавление ssh-ключа
 C [главной страницы](https://python-math-cs.compscicenter.ru) нужно зайти в свой репозиторий (ссылка "MY REPO" кликабельна) и добавить публичный ssh-ключ в настройках профиля в gitlab.manytask.org.
