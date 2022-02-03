@@ -9,8 +9,8 @@ grade:
       - $CI_PROJECT_NAME =~ /^(fall|spring)-20\d\d/
   script:
     - export CI_COMMIT_TIMESTAMP=$(git show -s --format=%cI $CI_COMMIT_SHA)  # TODO: remove after gitlab 13.4 upgrade
-    - cd /opt/shad/spring-2022-tests
-    - chmod -R 777 /opt/shad/spring-2022-tests
+    - cd /opt/shad/tests
+    - chmod -R 777 /opt/shad/tests
     - python3 -m checker grade
   timeout: 10 minutes
 
