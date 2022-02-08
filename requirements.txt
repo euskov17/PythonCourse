@@ -41,5 +41,8 @@ pytest-mock==3.6.1
 pytest-cov==2.12.1
 psutil==5.8.0
 
+# course test tools
+--editable tools/testlib
+
 # types
 types-requests==2.26.0
