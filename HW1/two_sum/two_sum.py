@@ -11,3 +11,11 @@ def two_sum(nums: tp.Sequence[int], target: int) -> tp.List[int]:
     :param target: specific target
     :return: list of the two indices
     """
+    if nums:
+        value_to_ind = {target - nums[0]: 0}
+        for i in range(1, len(nums)):
+            if nums[i] in value_to_ind:
+                return [value_to_ind[nums[i]], i]
+            else:
+                value_to_ind[target - nums[i]] = i
+    raise Exception('No two sum solution')
