@@ -118,7 +118,7 @@ git config --local user.email "<ваш емейл с python-math-cs.compscicente
 git remote set-url --push origin git@gitlab.manytask.org:spbu-python-spring-2022/<ваш репозиторий>
 
 # Например для логина sidor:
-git remote set-url --push origin git@gitlab.manytask.org:spbu-python-spring-2022/sidor
+git remote set-url --push origin git@gitlab.manytask.org:spbu-math-cs-python/sidor
 
 # Имя вашего репозитория доступно по ссылке "MY REPO"
 ```
@@ -296,7 +296,7 @@ git config --local user.email "<ваш емейл с python-math-cs.compscicente
 git remote set-url --push origin git@gitlab.manytask.org:spbu-python-spring-2022/<ваш репозиторий>
 
 # Например для логина sidor:
-git remote set-url --push origin git@gitlab.manytask.org:spbu-python-spring-2022/sidor
+git remote set-url --push origin git@gitlab.manytask.org:spbu-math-cs-python/sidor
 
 # Имя вашего репозитория доступно по ссылке "MY REPO"
 ```
