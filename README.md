@@ -197,6 +197,7 @@ mypy 0.910
 Мы рекомендуем вам воспользоваться [PyCharm](https://www.jetbrains.com/pycharm/download/).
 Скачайте бесплатную Community-версию, установите и запустите.
 
+- Для его настройки вместе с WSL воспользуйтесь [этой инструкции](https://www.jetbrains.com/help/pycharm/using-wsl-as-a-remote-interpreter.html#configure-wsl)
 - Создайте новый проект (Create new project)
 - Укажите путь до репозитория с задачами (см. пункт "Клонирование и настройка репозитория")
 - Разверните меню "Project interpreter", выберите "Existing interpreter"
@@ -375,6 +376,7 @@ Python 3.9.7 (default, Sep  2 2020, 19:52:21)
 Мы рекомендуем вам воспользоваться [PyCharm](https://www.jetbrains.com/pycharm/download/).
 Скачайте бесплатную Community-версию, установите и запустите.
 
+- Для его настройки вместе с WSL воспользуйтесь [этой инструкции](https://www.jetbrains.com/help/pycharm/using-wsl-as-a-remote-interpreter.html#configure-wsl)
 - Создайте новый проект (Create new project)
 - Укажите путь до репозитория с задачами (см. пункт "Клонирование и настройка репозитория")
 - Разверните меню "Project interpreter", выберите "Existing interpreter"
