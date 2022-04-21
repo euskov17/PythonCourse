@@ -5,7 +5,7 @@ import typing as tp
 
 import pytest
 
-from .merge_lists_3 import merge
+from .merge_lists_3 import merge_3 as merge
 
 
 @dataclasses.dataclass

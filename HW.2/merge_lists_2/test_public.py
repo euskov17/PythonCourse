@@ -6,7 +6,7 @@ import typing as tp
 import pytest
 import testlib
 
-from .merge_lists import merge
+from .merge_lists_2 import merge_2 as merge
 
 
 ###################
