@@ -4,7 +4,7 @@ variables:
 
 # Testing and Grading all tasks
 grade:
-  image: $REGISTRY/testenv
+  image: $REGISTRY/mkn-testenv
   tags:
     - docker-tester-python
   except:
@@ -18,20 +18,20 @@ grade:
   timeout: 10 minutes
 
 # Manual action: check current student mege requests
-grade-mrs:
-  image: $REGISTRY/testenv
-  tags:
-    - docker-tester-python
-  when: manual
-  except:
-    variables:
-      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /contributing/ || $CI_COMMIT_BRANCH =~ /contributing/
-      - $CI_PROJECT_NAME =~ /^(fall|spring)-20\d\d/
-  script:
-    - cd /opt/shad/tests
-    - chmod -R 777 /opt/shad/tests
-    - python3 -m checker grade-mrs
-  timeout: 10 minutes
+# grade-mrs:
+#   image: $REGISTRY/mkn-testenv
+#   tags:
+#     - docker-tester-python
+#   when: manual
+#   except:
+#     variables:
+#       - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /contributing/ || $CI_COMMIT_BRANCH =~ /contributing/
+#       - $CI_PROJECT_NAME =~ /^(fall|spring)-20\d\d/
+#   script:
+#     - cd /opt/shad/tests
+#     - chmod -R 777 /opt/shad/tests
+#     - python3 -m checker grade-mrs
+#   timeout: 10 minutes
 
 
 # Inspect
@@ -59,7 +59,7 @@ grade-mrs:
 
 # Checking contribution to the main repo
 check:
-  image: $REGISTRY/testenv
+  image: $REGISTRY/mkn-testenv
   tags:
     - docker-tester-python
   only:
