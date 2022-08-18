@@ -6,8 +6,6 @@ You need extend/rewrite code to pass all cases.
 import builtins
 import collections.abc
 import dis
-# import inspect
-# import inspect
 import types
 import typing as tp
 import asyncio
@@ -35,7 +33,6 @@ class Frame:
         self.return_value = None
         self.offset_map = {instr.offset: instr for instr in dis.get_instructions(frame_code)}
         self.current_offset = 0
-        # self.is_generator = isinstance(frame_code, types.GeneratorType)
 
     def top(self) -> tp.Any:
         return self.data_stack[-1]
@@ -67,16 +64,12 @@ class Frame:
                 returned = self.data_stack[-n:]
                 self.data_stack[-n:] = []
                 return returned
-            # else:
-                # print("")
         else:
             return []
 
     def run(self) -> tp.Any:
         while self.current_offset <= max(self.offset_map.keys()):
             instruction = self.offset_map[self.current_offset]
-            # print(instruction.opname, instruction.argval, self.current_offset)
-            # print(self.locals)
             rv = getattr(self, instruction.opname.lower() + "_op")(instruction.argval)
             if rv is not None:
                 if self.return_value is None:
@@ -84,20 +77,7 @@ class Frame:
                 else:
                     self.return_value.append(rv)
             self.current_offset += 2
-            # print(self.data_stack)
         return self.return_value
-
-    # def run_gen(self) -> tp.Any:
-    #     while self.current_offset <= max(self.offset_map.keys()):
-    #         instruction = self.offset_map[self.current_offset]
-    #         print(instruction.opname, instruction.argval)
-    #         getattr(self, instruction.opname.lower() + "_op")(instruction.argval)
-    #         if self.return_value is not None:
-    #             yield self.return_value
-    #             self.return_value = None
-    #         self.current_offset += 2
-    #         print(self.data_stack)
-    #     # return self.return_value
 
     def call_function_op(self, arg: int) -> None:
         """
@@ -107,17 +87,9 @@ class Frame:
         Operation realization:
             https://github.com/python/cpython/blob/3.9/Python/ceval.c#L3496
         """
-        # print(f"We are here {arg}", flush=True)
         if len(self.data_stack) >= arg + 1:
             arguments = self.popn(arg)
             f = self.pop()
-            # print(f.__name__, arguments)
-            # print(type(f), type(arguments), flush=True)
-
-            # rv = f(*arguments)
-            # if isinstance(f, type):
-            #     self.push(f.__init__(*arguments))
-            # else:
             self.push(f(*arguments))
         else:
             print("Not enought args\n")
@@ -158,15 +130,12 @@ class Frame:
         Operation realization:
             https://github.com/python/cpython/blob/3.9/Python/ceval.c#L2416
         """
-        # print(arg)
         if arg in self.locals:
             self.push(self.locals[arg])
         elif arg in self.globals:
             self.push(self.globals[arg])
         elif arg in self.builtins:
             self.push(self.builtins[arg])
-        # elif hasattr(self.builtins, arg):
-        #     self.push(getattr(self.builtins, arg))
         else:
             raise NameError(f'name \'{arg}\' is not defined')
 
@@ -241,35 +210,15 @@ class Frame:
         name = self.pop()  # the qualified name of the function (at TOS)  # noqa
         code = self.pop()  # the code associated with the function (at TOS1)
 
-        # print(name, code)
-        # TODO: use arg to parse function defaults
 
         def func(*args: tp.Any, **kwargs: tp.Any) -> tp.Any:
-            # TODO: parse input arguments using code attributes such as co_argcount
-
             parsed_args: dict[str, tp.Any] = {code.co_varnames[i]: args[i] for i in range(code.co_argcount)}
             f_locals = dict(self.locals)
             f_locals.update(parsed_args)
 
             frame = Frame(code, self.builtins, self.globals, f_locals)  # Run code in prepared environment
-            # print(f'Frame is generator = {frame.is_generator}, {type(frame.code)}')
             return frame.run()
 
-        # def gen(*args: tp.Any, **kwargs: tp.Any) -> tp.Any:
-        #     parsed_args: dict[str, tp.Any] = {code.co_varnames[i]: args[i] for i in range(code.co_argcount)}
-        #     f_locals = dict(self.locals)
-        #     f_locals.update(parsed_args)
-        #
-        #     frame = Frame(code, self.builtins, self.globals, f_locals)# Run code in prepared environment
-        #     # print(f'Frame is generator = {frame.is_generator}, {type(frame.code)}')
-        #     return frame.run_gen()
-        # instr = [i.opname for i in dis.Bytecode(code)]
-        # # print(instr, '\n\n\n\n\n\n\n\n')
-        # if 'yield_value'.upper() in instr or 'yield_from'.upper() in instr:
-        #     # print("We make_gen\n\n\n\n\n\n\n")
-        #     self.push(gen)
-        # else:
-        #     self.push(func)
         self.push(func)
 
     def store_name_op(self, arg: str) -> None:
@@ -296,10 +245,6 @@ class Frame:
         seq = self.pop()
         for el in reversed(seq):
             self.push(el)
-
-    def unpack_ex_op(self, counts: int) -> None:
-        # TODO: strange
-        pass
 
     def store_attr_op(self, namei: str) -> None:
         tos1, tos = self.topn(2)
@@ -420,7 +365,6 @@ class Frame:
 
     def import_star_op(self, arg):
         module = self.pop()
-        # self.locals.update(module)
         for attr in dir(module):
             if not attr[0].startswith('_'):
                 self.locals[attr] = getattr(module, attr)
@@ -460,13 +404,9 @@ class Frame:
 
     def for_iter_op(self, delta):
         tos = self.top()
-        # print(tos)
         try:
-            # iter_next = next(tos)
             self.push(next(tos))
         except StopIteration:
-            # print(f'delta is {delta}')
-            # self.jump_forward_op(delta)
             self.pop()
             self.jump_absolute_op(delta)
 
@@ -488,11 +428,7 @@ class Frame:
     def load_closure_op(self, i):
         pass
 
-    # self.push(self.locals[i]) #interesting
-    # TODO:
-
     def load_deref_op(self, i):
-        # self.push(self.locals[i])
         assert False, 'Load deref'
 
     def load_classderef_op(self, i):
@@ -540,16 +476,11 @@ class Frame:
     def match_class_op(self, count: int):
         tos, [tos2, tos1] = self.pop(), self.topn(2)
         if isinstance(tos2, tos1):
-            #TODO:
             self.pop()
             self.push(dir(tos2))
             self.push(True)
         else:
             self.push(False)
-
-    def gen_start_op(self, kind):
-        tos = self.pop()
-        #TODO:
 
     def rot_n_op(self, count: int):
         tos = self.pop()
@@ -557,10 +488,6 @@ class Frame:
         self.push(tos)
         for i in below_values:
             self.push(i)
-
-    def have_argument_op(self):
-        pass
-        #TODO:
 
     def load_assertion_error_op(self, message):
         self.push(AssertionError(message))
@@ -618,7 +545,6 @@ class Frame:
         self.push(iter(self.pop()))
 
     def get_yield_from_iter_op(self, arg) -> None:
-        # TODO: inspect
         if not (asyncio.iscoroutine(self.top())):  # or inspect.isgeneratorfunction(self.top())):
             self.get_iter_op(arg)
 
@@ -792,73 +718,3 @@ class VirtualMachine:
         frame = Frame(code_obj, builtins.globals()['__builtins__'], globals_context, globals_context)
         return frame.run()
 
-
-def compile_code(text_code: tp.Union[types.CodeType, str]) -> types.CodeType:
-    """
-    This is utility function with primary purpose to convert string code to code type.
-    Secondary purpose - print byte code for text_code and all nested text_code
-    :param text_code: text code for compiling
-    :return: compiled code
-    """
-    if isinstance(text_code, str):
-        # print("Text code:\n{}\n".format(text_code))
-        # print("Disassembled code:\n")
-        # dis.dis(text_code)
-        # print("\n")
-        code = compile(text_code, '<stdin>', 'exec')
-    else:
-        code = text_code
-
-    for const in code.co_consts:
-        if isinstance(const, types.CodeType):
-            compile_code(const)
-
-    # print("Disassembled code co params:\n")
-    # print(
-    #     "Co consts: {}\nCo freevars: {}\nCo flags: {}\n"
-    #     "Co cellvars: {}\nCo kwonlyargcount: {}\nCo names: {}\n"
-    #     "Co nlocals: {}\nCo varnames: {}\nCo stacksize: {}\n"
-    #     "Co name: {}\nCo lnotab: {}\nCo argcount: {}\n".format(
-    #         code.co_consts, code.co_freevars,
-    #         code.co_flags,
-    #         code.co_cellvars,
-    #         code.co_kwonlyargcount,
-    #         code.co_names,
-    #         code.co_nlocals,
-    #         code.co_varnames,
-    #         code.co_stacksize,
-    #         code.co_name,
-    #         list(code.co_lnotab),
-    #         code.co_argcount)
-    # )
-
-    return code
-
-
-if __name__ == "__main__":
-    # text_code = '\nx = "-".join(str(z) for z in range(5))\nprint(x)\n'
-    # text_code = 'print([str(z) for z in range(5)]\n)'
-    # text_code = '\nout = "hello "\nfor i in range(5):\n    out = out + str(i)\nprint(out)\n'
-    # text_code = '\nx=5\n'
-#     text_code = r"""
-# class Thing(object):
-#     def __init__(self, x):
-#         self.x = x
-#     def meth(self, y):
-#         return self.x * y
-# thing1 = Thing(2)
-# thing2 = Thing(3)
-# print(thing1.x, thing2.x)
-# print(thing1.meth(4), thing2.meth(5))
-# """
-    text_code = r"""
-a,b=(1,3)
-b,a=a,b
-print(a ** b)   
-"""
-    vm = VirtualMachine()
-    # print(getattr(builtins.globals()["__builtins__"], 'print'))
-    # print(dis.dis(text_code))
-    print("rv is ", vm.run(compile_code(text_code)))
-    # print(getattr(builtins.globals()["__builtins__"], 'print'))
-    # print('\n'.join([iter.opname + '  ' + str(iter.arg) for iter in dis.get_instructions(text_code)]))
