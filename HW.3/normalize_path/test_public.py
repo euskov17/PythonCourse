@@ -49,8 +49,8 @@ class LoadCase:
 
 LOAD_TEST_CASES = [
     LoadCase(path='/h/..' * 1_000_000, num=1),
-    # LoadCase(path='/h/../a/..' * 1_000_000, num=1),
-    # LoadCase(path='/a/b//..//../' * 1_000_000, num=1),
+    LoadCase(path='/h/../a/..' * 1_000_000, num=1),
+    LoadCase(path='/a/b//..//../' * 1_000_000, num=1),
     LoadCase(path='/a/b//c/d/..//../..//..' * 1_000_000, num=1),
 ]
 

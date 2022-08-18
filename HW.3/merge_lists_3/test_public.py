@@ -26,6 +26,7 @@ def make_test_cases() -> tp.Generator[Case, None, None]:
             lists[basket].append(j)
         yield Case(lists=lists, name=f"list_{i}")
 
+    yield Case(lists=[[0, 2, 4, 6, 8, 10, 12], [1, 3, 5, 7, 9, 11, 13]], name="small_list")
     yield Case(lists=[], name="list_empty")
     yield Case(lists=[[], [], []], name="list_with_empty_lists")
 
@@ -48,7 +49,6 @@ def make_test_cases() -> tp.Generator[Case, None, None]:
 
 @pytest.mark.parametrize('t', list(make_test_cases()), ids=str)
 def test_merge(t: Case) -> None:
-
     input_streams = [io.BytesIO(b"".join(bytes(f"{value}\n", "utf8") for value in list_)) for list_ in t.lists]
     output_stream = io.BytesIO()
 

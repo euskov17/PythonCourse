@@ -1,4 +1,5 @@
 import typing as tp
+import re
 
 
 def count_util(text: str, flags: tp.Optional[str] = None) -> dict[str, int]:
@@ -20,3 +21,13 @@ def count_util(text: str, flags: tp.Optional[str] = None) -> dict[str, int]:
         * "longest_line" - the longest line length
         * "words" - amount of words
     """
+    result = {}
+    if not flags or 'm' in flags:
+        result['chars'] = len(text)
+    if not flags or 'l' in flags:
+        result['lines'] = text.count('\n')
+    if not flags or 'L' in flags:
+        result['longest_line'] = max([len(line) for line in text.split('\n')])
+    if not flags or 'w' in flags:
+        result['words'] = len(text.split())
+    return result

@@ -14,6 +14,7 @@ def construct_array(
     :param col_indices: list of column indices
     :return: matrix slice
     """
+    return matrix[row_indices, col_indices]
 
 
 def detect_identic(
@@ -25,6 +26,11 @@ def detect_identic(
     :param rhs_array: second array
     :return: True if input arrays are equal, False otherwise
     """
+    if np.shape(lhs_array) != np.shape(rhs_array):
+        return False
+    if np.size(rhs_array) == 1:
+        return lhs_array == rhs_array
+    return np.size(lhs_array[lhs_array != rhs_array]) == 0
 
 
 def mean_channel(X: np.ndarray) -> np.ndarray:
@@ -34,6 +40,7 @@ def mean_channel(X: np.ndarray) -> np.ndarray:
     :param X: color image
     :return: array of size 3 with average values
     """
+    return X.mean(axis=(0, 1))
 
 
 def get_unique_rows(X: np.ndarray) -> np.ndarray:
@@ -42,6 +49,7 @@ def get_unique_rows(X: np.ndarray) -> np.ndarray:
     :param X: matrix
     :return: matrix of unique rows
     """
+    return np.unique(np.sort(X, axis=0), axis=0)
 
 
 def construct_matrix(first_array: np.ndarray, second_array: np.ndarray) -> np.ndarray:
@@ -51,3 +59,4 @@ def construct_matrix(first_array: np.ndarray, second_array: np.ndarray) -> np.nd
     :param second_array: second array
     :return: constructed matrix
     """
+    return np.hstack((first_array[:, np.newaxis], second_array[:, np.newaxis]))

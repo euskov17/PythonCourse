@@ -10,3 +10,4 @@ def length_of_last_word(s: str) -> int:
     if we loop from left to right) in the string.
     If the last word does not exist, return 0.
     """
+    return len(s) - s.rfind(' ') - 1

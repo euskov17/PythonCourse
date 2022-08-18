@@ -6,6 +6,7 @@ def transpose(matrix: list[list[Any]]) -> list[list[Any]]:
     :param matrix: rectangular matrix
     :return: transposed matrix
     """
+    return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
 
 
 def uniq(sequence: list[Any]) -> Generator[Any, None, None]:
@@ -14,6 +15,11 @@ def uniq(sequence: list[Any]) -> Generator[Any, None, None]:
     :return: generator of elements of `sequence` in
     the same order without duplicates
     """
+    was_read = set()
+    for el in sequence:
+        if el not in was_read:
+            was_read.add(el)
+            yield el
 
 
 def dict_merge(*dicts: dict[Any, Any]) -> dict[Any, Any]:
@@ -21,6 +27,7 @@ def dict_merge(*dicts: dict[Any, Any]) -> dict[Any, Any]:
     :param *dicts: flat dictionaries to be merged
     :return: merged dictionary
     """
+    return {key: value for dct in dicts for key, value in dct.items()}
 
 
 def product(lhs: list[int], rhs: list[int]) -> int:
@@ -29,3 +36,4 @@ def product(lhs: list[int], rhs: list[int]) -> int:
     :param lhs: second factor
     :return: scalar product
     """
+    return sum([lhs[i] * rhs[i] for i in range(len(lhs))])

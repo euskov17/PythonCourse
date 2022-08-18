@@ -12,21 +12,29 @@ class Range(Sized, Iterable[int]):
         If the `start` argument is omitted, it defaults to 0.
         If `step` is zero, ValueError is raised.
         """
+        self.data = range(*args)
+        if len(args) == 1:
+            self._args = [0, *args]
+        elif len(args) == 2 or args[2] == 1:
+            self._args = [*args][:2]
+        else:
+            self._args = args
 
     def __iter__(self) -> 'RangeIterator':
-        pass
+        for el in self.data:
+            yield el
 
     def __repr__(self) -> str:
-        pass
+        return f"Range({','.join(map(str, self._args))})"
 
     def __str__(self) -> str:
-        pass
+        return f"range({', '.join(map(str, self._args))})"
 
     def __contains__(self, key: int) -> bool:
-        pass
+        return key in self.data
 
     def __getitem__(self, key: int) -> int:
-        pass
+        return self.data[key]
 
     def __len__(self) -> int:
-        pass
+        return len(self.data)

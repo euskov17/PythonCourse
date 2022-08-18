@@ -11,7 +11,7 @@ class EmptyBannerStorageError(Exception):
 
 
 class BannerStat:
-    def __init__(self, clicks: int, shows: int):
+    def __init__(self, clicks: int = 0, shows: int = 0):
         self._clicks = clicks
         self._shows = shows
 
@@ -19,7 +19,7 @@ class BannerStat:
         self._clicks += 1
 
     def add_show(self) -> None:
-        self._clicks += 1
+        self._shows += 1
 
     @property
     def clicks(self) -> int:
@@ -37,7 +37,7 @@ class BannerStat:
         if self.shows == 0:
             return default_ctr
         else:
-            return self.shows / self.clicks
+            return self.clicks / self.shows
 
 
 class Banner:
@@ -119,23 +119,25 @@ class EpsilonGreedyBannerEngine:
     Banner engine that with 1 - epsilon probability shows banner with highest CPC (cost per click = cost * CTR)
     With epsilon probability shows random banner to gather more stats
     """
+
     def __init__(self, banner_storage: BannerStorage, random_banner_probability: float):
-        """
+        """BannerStorage(test_banners)
         :param banner_storage: None empty banner storage
         :param random_banner_probability: 1.0 - every show is random. 0.0 - every show is greedy
         """
         self._epsilon = random_banner_probability
         self._storage = banner_storage
-
+        if banner_storage.is_empty():
+            raise EmptyBannerStorageError
         self._show_count = 0
-        self._total_cost = 0
+        self._total_cost = sum([value._stat.clicks * value.cost for value in banner_storage._banner_dict.values()])
 
     def show_banner(self) -> str:
         """
         Engine is asked to show banner.
         Engine selects banner with epsilon-greedy algorithms and updates banner show statistics.
         """
-        if random.random() > self._epsilon:
+        if self._epsilon and (self._epsilon == 1.0 or random.random() > self._epsilon):
             selected_banner = self._storage.random_banner()
         else:
             selected_banner = self._storage.banner_with_highest_cpc()
@@ -151,7 +153,8 @@ class EpsilonGreedyBannerEngine:
         Important! Web page can send incorrect `banner_id`. Engine must not fail in that case!
         """
         try:
-            self._storage.add_show(banner_id)
+            self._storage.add_click(banner_id)
+            self._total_cost += self._storage.get_banner(banner_id).cost
         except NoBannerError:
             pass
 

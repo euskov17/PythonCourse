@@ -1,45 +1,49 @@
 # internet
-requests==2.26.0
-beautifulsoup4==4.9.3
-aiohttp==3.7.4.post0
-yarl==1.6.3
+requests==2.28.1
+beautifulsoup4==4.11.1
+aiohttp==3.8.1
+yarl==1.7.2
 
 # c bindings and compillers
-numba==0.54.0
-Cython==0.29.24
+numba==0.55.2
+Cython==0.29.30
 
 # data
-scipy==1.7.1
-numpy==1.20.2  # numba max version 1.20.3, m1 support version 1.20.2
-pandas==1.3.1  # m1 max support version 1.3.1
+scipy==1.8.1
+numpy==1.23.1  # numba max version 1.20.3, m1 support version 1.20.2
+pandas==1.4.3  # m1 max support version 1.3.1
 
 # visualisation
-plotly==5.3.1
-matplotlib==3.4.3
+plotly==5.9.0
+matplotlib==3.5.2
 seaborn==0.11.2
 
 # date and time
-tzlocal==3.0
+tzlocal==4.2
 
 # serializers
-lxml==4.6.3
+lxml==4.9.1
 flatbuffers==2.0
-protobuf==3.17.3
+protobuf==4.21.3
 
 # other stuff
 fastapi==0.68.1
-SQLAlchemy==1.4.23
-GitPython==3.1.24
+SQLAlchemy==1.4.39
+GitPython==3.1.27
 
 # testing and linting
-flake8==3.9.2
-mypy==0.910
-pytest==6.2.5
-pytest-timeout==1.4.2
+flake8==4.0.1
+mypy==0.971
+pytest==7.1.2
+pytest-timeout==2.1.0
 requests-mock==1.9.3
-pytest-mock==3.6.1
-pytest-cov==2.12.1
-psutil==5.8.0
+pytest-mock==3.8.2
+pytest-cov==3.0.0
+psutil==5.9.1
 
 # types
-types-requests==2.26.0
+types-requests==2.28.3
+
+testlib~=0.6.5
+setuptools==63.2.0
+starlette==0.20.4

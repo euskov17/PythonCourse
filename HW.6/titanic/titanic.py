@@ -1,5 +1,5 @@
 import typing as tp
-
+from collections import Counter
 import pandas as pd
 
 
@@ -9,6 +9,8 @@ def male_age(df: pd.DataFrame) -> float:
     :param df: dataframe
     :return: mean age
     """
+    return df[(df["Survived"] == 1) & (df["Sex"] == "male") & (df["Embarked"] == "S")
+              & (df["Fare"] > 30) & (df["Age"].notnull())]["Age"].mean()
 
 
 def nan_columns(df: pd.DataFrame) -> tp.Iterable[str]:
@@ -17,6 +19,7 @@ def nan_columns(df: pd.DataFrame) -> tp.Iterable[str]:
     :param df: dataframe
     :return: series of columns
     """
+    return df.columns[df.isna().any()].tolist()
 
 
 def class_distribution(df: pd.DataFrame) -> pd.Series:
@@ -25,6 +28,9 @@ def class_distribution(df: pd.DataFrame) -> pd.Series:
     :param df: dataframe
     :return: series with ratios
     """
+    line = pd.Series(Counter(df["Pclass"]))
+    line.name = "Pclass"
+    return line.sort_index(sort_remaining=False) / df["Pclass"].size
 
 
 def families_count(df: pd.DataFrame, k: int) -> int:
@@ -34,6 +40,8 @@ def families_count(df: pd.DataFrame, k: int) -> int:
     :param k: number of members,
     :return: number of families
     """
+    families = pd.Series(Counter(df["Name"].apply(lambda x: x[:x.index(',')])))
+    return families[families > k].size
 
 
 def mean_price(df: pd.DataFrame, tickets: tp.Iterable[str]) -> float:
@@ -43,6 +51,7 @@ def mean_price(df: pd.DataFrame, tickets: tp.Iterable[str]) -> float:
     :param tickets: list of tickets,
     :return: mean fare for this tickets
     """
+    return df[df["Ticket"].isin(tickets)]["Fare"].mean()
 
 
 def max_size_group(df: pd.DataFrame, columns: list[str]) -> tp.Iterable[tp.Any]:
@@ -52,6 +61,7 @@ def max_size_group(df: pd.DataFrame, columns: list[str]) -> tp.Iterable[tp.Any]:
     :param columns: columns for grouping,
     :return: list of most common combination
     """
+    return Counter(map(tuple, df[columns].dropna().values)).most_common(1)[0][0]
 
 
 def dead_lucky(df: pd.DataFrame) -> float:
@@ -65,3 +75,11 @@ def dead_lucky(df: pd.DataFrame) -> float:
     :param df: dataframe,
     :return: ratio of dead lucky passengers
     """
+
+    def is_lucky(num: str) -> bool:
+        return (num.isdigit() and len(num) % 2 == 0 and sum(map(int, num[:len(num) // 2])) == sum(
+            map(int, num[len(num) // 2:])))
+
+    lucky = df["Ticket"].apply(is_lucky)
+    lucky_survived = df[lucky]["Survived"]
+    return 1 - lucky_survived.sum() / lucky_survived.size

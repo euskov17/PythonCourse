@@ -3,48 +3,73 @@ from typing import Any
 
 
 def f0() -> Any:
-    pass
+    return None
 
 
 def f1() -> Any:
-    pass
+    a = 0
+    return a
 
 
 def f2() -> Any:
-    pass
+    a = 0
+    print(a)
+    return None
 
 
 def f3() -> Any:
-    pass
+    a = 0
+    a += 1
+    print(a)
+    return None
 
 
 def f4() -> Any:
-    pass
+    return range(10)
 
 
 def f5() -> Any:
-    pass
+    for i in range(10):
+        print(i)
+    return None
 
 
 def f6() -> Any:
-    pass
+    a = 0
+    for i in range(10):
+        a += 1
+    print(a)
+    return None
 
 
 def f8() -> Any:
-    pass
+    x, y = (1, 2)
+    return None
 
 
 def f9() -> Any:
-    pass
+    if 1 == 1:
+        return 1
+    return 2
 
 
 def f10() -> Any:
-    pass
+    for i in range(10):
+        if i == 3:
+            break
+    return None
 
 
 def f11() -> Any:
-    pass
+    list_ = list.extend([], (1, 2, 3))
+    dict_ = {'a': 1, 'b': 2}
+    return (list_, dict_)
 
 
 def f12() -> Any:
-    pass
+    a = 1
+    b = 2
+    c = 3
+    d = 4
+    e = 5
+    return a + (b * c) / (d ** e)

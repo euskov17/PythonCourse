@@ -10,3 +10,9 @@ def nonzero_product(matrix: np.ndarray) -> tp.Optional[float]:
     :param matrix: array,
     :return: product value or None
     """
+    non_zero_diag = np.diag(matrix)
+    non_zero_diag = non_zero_diag[non_zero_diag != 0]
+    if np.size(non_zero_diag) != 0:
+        return np.prod(non_zero_diag, dtype=float)
+    else:
+        return None
